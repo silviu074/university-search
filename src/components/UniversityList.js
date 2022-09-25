@@ -25,26 +25,27 @@ const UniversityList = () => {
     }, [])
     
      function searchFunction(university, searchWord) {
-      let results = []
+      let result = []
+      
       for(let i=0;i<=university.length;i++){
            if(typeof(university[i]) === 'undefined') break;
            if (university[i].name.toLowerCase().includes(searchWord.toLowerCase()))
            {
-            // console.log(university[i].name)
-            results[i] = university[i]
-           } else results[i]=''
+            result.push(university[i])
+           } 
       }
-      results= results.filter(Boolean)
       console.log(results)
-      return results
+      
+      return result
     }
     
 
   return (
-    <div>
+    <div className='container'>
       
       {loading ? 'Loading' : null}
       {error ? 'Something went wrong' : null}
+
       <h1>Search</h1>
       <input 
          type='text' 
@@ -52,11 +53,21 @@ const UniversityList = () => {
          onChange={e => {
            setSearchWord(e.target.value)
            }} />
-      <button onClick={ () => setResults(searchFunction(university, searchWord))} > Search</button>
-       <div>
-         {results.map( ({results}, index) =>
-         <div key={index}><li>{results} {index}</li></div>)} 
-       </div>
+      <button onClick={ () =>  setResults(searchFunction(university, searchWord))} > Search</button>
+
+            
+            {results.map (function (result, index) {
+              return (
+                <div key={index} className='universityConainter' >
+                  <p> Name: {result.name} </p>
+                  <p> Web page: {result.web_pages} </p>
+                  <p> Domain: {result.domains} </p>
+                  <p> Country: {result.country} </p>
+                  <p> Country code: {result.alpha_two_code} </p>
+                </div>
+              )
+            })}
+
     </div>
   )
 }
