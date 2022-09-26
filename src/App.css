@@ -1,16 +1,32 @@
 
 body {
-    background-image: url('/src/img/university-background.jpg');
-    /* background-size: cover; */
-     color:black;
+    background-image: url(/src/img/university-background.jpg);
+    background-size: auto;
+    background-color:black;
+     color:white;
      text-align: center;
+     overflow-x: hidden;
 }
 
 
+.resultsContainer{
+    display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+
 .universityConainter{
     text-align: center;
-    border: 1px solid red;
+    border: 5px solid orange;
+    border-radius: 15px;
     margin: 20px 0 20px 0;
-    
+    width: 500px;
+    word-wrap: break-word;
+    margin: 3rem 2rem 1rem 2rem;
+    background-color: black;
+    color: white;
 }
 

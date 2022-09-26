@@ -34,7 +34,6 @@ const UniversityList = () => {
             result.push(university[i])
            } 
       }
-      console.log(results)
       
       return result
     }
@@ -54,20 +53,24 @@ const UniversityList = () => {
            setSearchWord(e.target.value)
            }} />
       <button onClick={ () =>  setResults(searchFunction(university, searchWord))} > Search</button>
+      
 
-            
+           <div className='resultsContainer' > 
             {results.map (function (result, index) {
               return (
                 <div key={index} className='universityConainter' >
                   <p> Name: {result.name} </p>
-                  <p> Web page: {result.web_pages} </p>
-                  <p> Domain: {result.domains} </p>
+                  <div><p> Web page:</p>
+                   <a href={result.web_pages[0]} target='blank' >{result.web_pages[0]}</a><br/>
+                   <a href={result.web_pages[1]} target='blank' >{result.web_pages[1]}</a>
+                   </div>
+                  <p> Domain: @{result.domains} </p>
                   <p> Country: {result.country} </p>
                   <p> Country code: {result.alpha_two_code} </p>
                 </div>
               )
             })}
-
+      </div> 
     </div>
   )
 }
