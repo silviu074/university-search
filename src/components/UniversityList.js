@@ -44,7 +44,7 @@ const UniversityList = () => {
             result.push(university[i])
            } 
       }
-      
+      if(result.length === 0) alert('No results found')
       return result
     }
 
@@ -60,7 +60,9 @@ const UniversityList = () => {
          result.push(university[i])
         } 
    }
-      return result
+   console.log(result)
+   if(result.length === 0) alert('The e-mail address is invalid')
+   return result
     }
 
 
@@ -76,6 +78,7 @@ const UniversityList = () => {
            } 
       }
       
+      if(result.length === 0) alert('This country does not exist')
       return result
     }
     
@@ -85,56 +88,71 @@ const UniversityList = () => {
       
       {loading ? 'Loading' : null}
       {error ? 'Something went wrong' : null}
-      <h1>World universities and domains </h1>
-      <p>The purpose of this project is to extract data from
-      <a href="https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json" >
-        this API
-      </a> and to display it in a simplified manner.  </p>
-      <p>Using the following buttons you can generate a list of universities by searching:</p>
+      
+      <br/><h1>World Universities and Domains </h1><br/>
+      <p>The purpose of this project is to display data from&nbsp; 
+      <a href="https://github.com/Hipo/university-domains-list-api" >
+      University Domains and Names Data List & API
+      </a> in a simplified and elegant manner.  </p>
+      <p>Using the buttons below, you can generate a list of universities based on name, country 
+        and/or student e-mail address:</p><br/>
 
-      <h2>University name</h2>
+      <h2>Name</h2>
+      <div>
       <input 
          type='text' 
          placeholder='Enter university name' 
+         className='input'
          onChange={e => {
            setSearchWord(e.target.value)
            }} />
-      <button onClick={ () =>  setNameSearchResults(nameSearchFunction(university, searchWord))} > Search</button>
-      <button onClick={ () =>  setNameSearchResults([])} > Clear</button>
+      <button className='button'
+       onClick={ () =>  setNameSearchResults(nameSearchFunction(university, searchWord))} > Search</button>
+      </div>
       
       
 
       <h2>Country</h2>
+      <div>
       <input 
          type='text' 
          placeholder='Enter country' 
+         className='input'
          onChange={y => {
            setCountry(y.target.value)
            }} />
-      <button onClick={ () =>  setCountrySearchResults(countrySearchFunction(university, country))} > Search</button>
-      <button onClick={ () =>  setCountrySearchResults([])} > Clear</button>
+      <button className='button' 
+      onClick={ () =>  setCountrySearchResults(countrySearchFunction(university, country))} > Search</button>
+      </div>
 
-      <p>If you want to check a student e-mail is valid you can type the address down below.
-        The following button will generate details about the university from which the entered e-mail comes from.
-      </p>
+      
 
-      <h2>E-mail validation</h2>
+      <h2>Student e-mail</h2>
+      <div>
       <input 
          type='text' 
-         placeholder='Enter e-mail' 
+         placeholder='Enter student e-mail address' 
+         className='input'
          onChange={x => {
            setEmail(x.target.value)
            }} />
-      <button onClick={ () =>  setEmailResults(validateFunction(university, email))} > Validate</button>
-      <button onClick={ () =>  setEmailResults([])} > Clear</button>
+      <button className='button' 
+      onClick={ () =>  setEmailResults(validateFunction(university, email))} > Search </button>
+      </div>
+      <button className='buttonClear' onClick={ () =>  {setEmailResults([]) 
+                                  setCountrySearchResults([])
+                                  setNameSearchResults([])
+                                  }} > Clear </button>
 
+        
       <div className='resultsContainer' > 
+      
             { 
             emailResults.map (function (result, index) {
               return (
                 
                 <div key={index} className='universityConainter' >
-                  <p> Name: {result.name} </p>
+                  <p>This e-mail domain belongs to:  {result.name} </p>
                   <div>
                    <a href={result.web_pages[0]} target='blank' >{result.web_pages[0]}</a><br/>
                    <a href={result.web_pages[1]} target='blank' >{result.web_pages[1]}</a>
@@ -142,8 +160,9 @@ const UniversityList = () => {
                   <p> Domain: @{result.domains} </p>
                   <p> Country: {result.country} </p>
                   <p> Country code: {result.alpha_two_code} </p>
+
                 </div>
-              )
+              ) 
             })}
       </div> 
 

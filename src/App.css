@@ -1,9 +1,10 @@
 
 body {
-    background-image: url(/src/img/university-background.jpg);
+    /* background: linear-gradient(120deg, #135d5f 60%, #0a054d 60%); */
+    background: linear-gradient(90deg, rgb(3, 0, 46) 70%, rgb(58, 201, 245) 180%) right;
+    background-size: 200% 100%;
     background-size: auto;
-    background-color:black;
-     color:white;
+     color: white;
      text-align: center;
      overflow-x: hidden;
 }
@@ -20,13 +21,75 @@ body {
 
 .universityConainter{
     text-align: center;
-    border: 5px solid orange;
+    border: 5px solid rgb(167, 253, 249);
+    background: linear-gradient(90deg, rgb(58, 201, 245) 1%, rgb(3, 0, 46) 30%) right;
+    opacity: 80%;
     border-radius: 15px;
     margin: 20px 0 20px 0;
     width: 500px;
     word-wrap: break-word;
     margin: 3rem 2rem 1rem 2rem;
-    background-color: black;
     color: white;
 }
 
+.input{
+    height: 30px;
+    width: 300px;
+    border-radius: 8px;
+}
+
+.button, .buttonClear {
+    background-color: #247c97;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+  }
+
+  .button{
+    margin-left: 10px;
+  }
+  
+.buttonClear{
+    display: block;
+    margin:50px auto 50px auto;
+    width: 400px;
+}
+
+  .button:hover,
+  .button:focus,
+  .buttonClear:hover,
+  .buttonClear:focus {
+    background-color: #193797;
+  }
+
+  @media only screen and (max-width: 712px) {
+    html, body {
+        overflow-x: hidden;
+      }
+    body {
+      padding: 0 15px 0 15px;
+      position: relative
+    }
+    .button {
+        width: 200px;
+        margin: 15px 0 0 0;
+    }
+    .buttonClear{
+        width: 300px;
+    }
+    .input {
+        width: 300px;
+    }
+  }
