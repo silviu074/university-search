@@ -6,17 +6,33 @@ import React, { useState, useEffect} from 'react'
 
 const UniversityList = () => {
 
+    // const for getting data from API
+
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [university, setUniversity] = useState()
+
+    // searchWord stores the input value from the Name Search section
+    // nameSearchResults stores the object/array of objects found in the search
+
     const [searchWord, setSearchWord] = useState('')
     const [nameSearchResults, setNameSearchResults] = useState([])
+
+    // country stores the input value from the Country Search section
+    // countrySearchResults stores the object/array of objects found in the search   
+
+    const [country, setCountry] = useState('')
+    const [countrySearchResults, setCountrySearchResults] = useState([])    
+
+     // email stores the input value from the E-mail section
+     // emailResults stores the object/array of objects found in the search
+
     const [email, setEmail] = useState('')
     const [emailResults, setEmailResults] = useState([])
-    const [country, setCountry] = useState('')
-    const [countrySearchResults, setCountrySearchResults] = useState([])
 
 
+
+    // Storing the json from API to const {university}
 
     useEffect( () => {
       axios.get('https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json')
@@ -32,11 +48,12 @@ const UniversityList = () => {
             console.log(err)
         })
     }, [])
+
+
+    // Search by name ( API array of objects, name input value )
     
      function nameSearchFunction(university, searchWord) {
       let result = []
-      if(searchWord === '') return nameSearchResults
-      
       for(let i=0;i<=university.length;i++){
            if(typeof(university[i]) === 'undefined') break;
            if (university[i].name.toLowerCase().includes(searchWord.toLowerCase()))
@@ -47,6 +64,9 @@ const UniversityList = () => {
       if(result.length === 0) alert('No results found')
       return result
     }
+
+
+     // Search by e-mail ( API array of objects, e-mail input value )
 
     function validateFunction(university, email) {
       let result=[]
@@ -59,17 +79,18 @@ const UniversityList = () => {
         {
          result.push(university[i])
         } 
-   }
-   console.log(result)
-   if(result.length === 0) alert('The e-mail address is invalid')
-   return result
-    }
+         }
+       console.log(result)
+       if(result.length === 0) alert('The e-mail address is invalid')
+       return result
+       }
 
+
+       // Search by country ( API array of objects, country input value )
 
     function countrySearchFunction(university, country) {
       let result = []
-      if(country === '') return nameSearchResults
-      
+      if(country === '') return countrySearchResults
       for(let i=0;i<=university.length;i++){
            if(typeof(university[i]) === 'undefined') break;
            if (university[i].country.toLowerCase().includes(country.toLowerCase()))
@@ -77,7 +98,6 @@ const UniversityList = () => {
             result.push(university[i])
            } 
       }
-      
       if(result.length === 0) alert('This country does not exist')
       return result
     }
@@ -97,6 +117,8 @@ const UniversityList = () => {
       <p>Using the buttons below, you can generate a list of universities based on name, country 
         and/or student e-mail address:</p><br/>
 
+        {/* Name Search */}
+
       <h2>Name</h2>
       <div>
       <input 
@@ -107,10 +129,11 @@ const UniversityList = () => {
            setSearchWord(e.target.value)
            }} />
       <button className='button'
-       onClick={ () =>  setNameSearchResults(nameSearchFunction(university, searchWord))} > Search</button>
+       onClick={ () => 
+        setNameSearchResults(nameSearchFunction(university, searchWord))} > Search</button>
       </div>
       
-      
+      {/* Country Search */}
 
       <h2>Country</h2>
       <div>
@@ -122,10 +145,12 @@ const UniversityList = () => {
            setCountry(y.target.value)
            }} />
       <button className='button' 
-      onClick={ () =>  setCountrySearchResults(countrySearchFunction(university, country))} > Search</button>
+        onClick={ () => 
+        setCountrySearchResults(countrySearchFunction(university, country))} > Search
+      </button>
       </div>
 
-      
+      {/* E-mail search */}
 
       <h2>Student e-mail</h2>
       <div>
@@ -137,13 +162,21 @@ const UniversityList = () => {
            setEmail(x.target.value)
            }} />
       <button className='button' 
-      onClick={ () =>  setEmailResults(validateFunction(university, email))} > Search </button>
+        onClick={ () =>  
+        setEmailResults(validateFunction(university, email))} > Search
+      </button>
       </div>
-      <button className='buttonClear' onClick={ () =>  {setEmailResults([]) 
-                                  setCountrySearchResults([])
-                                  setNameSearchResults([])
-                                  }} > Clear </button>
 
+      {/* Clearing any search by resetting the objects */}
+
+      <button className='buttonClear' 
+      onClick={ () =>  {setEmailResults([]) 
+                        setCountrySearchResults([])
+                        setNameSearchResults([])
+                        }} > Clear </button>
+
+
+      {/* Rendering the results for for e-mail search */}
         
       <div className='resultsContainer' > 
       
@@ -166,6 +199,8 @@ const UniversityList = () => {
             })}
       </div> 
 
+      {/* Rendering the results for for country search */}
+
       <div className='resultsContainer' > 
             {
             countrySearchResults.map (function (result, index) {
@@ -185,7 +220,7 @@ const UniversityList = () => {
             })}
       </div> 
 
-           
+           {/* Rendering the results for for name search */}
       
            <div className='resultsContainer' > 
             {

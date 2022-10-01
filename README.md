@@ -1,70 +1,150 @@
-# Getting Started with Create React App
+# React University Search 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The purpose of this project is to display data from [University Domains and Names Data List & API](https://github.com/Hipo/university-domains-list-api) in a simplified and elegant manner.
 
-## Available Scripts
+## Built with
 
-In the project directory, you can run:
+  * HTML 
+  * CSS
+  * Javascript
+  * React
+  * University Domains and Names API
+  * Axios
+  
+## Demo
 
-### `npm start`
+https://user-images.githubusercontent.com/44822821/192899507-c74acc3b-5659-4e89-8bd2-71a4b48a7ba0.mp4
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## How does this work?
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The const {university} is used to store the content of the [University Domains and Names Data List & API](https://github.com/Hipo/university-domains-list-api)
 
-### `npm test`
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
+    const [university, setUniversity] = useState()
+    
+    useEffect( () => {
+      axios.get('https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json')
+        .then(response => {
+            setLoading(false)
+            setUniversity(response.data)
+            setError(false)
+        })
+        .catch(err => {
+            setLoading(false)
+            setUniversity({})
+            setError(true)
+            console.log(err)
+        })
+    }, [])
 
-### `npm run build`
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Then there are 3 search functions corresponding to each button:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Search by name:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
 
-### `npm run eject`
+    // {searchWord} gets the value from the input field next to it
+    // (nameSearchResults} is the object/array of objects returned by the function
+    
+     <button className='button'
+       onClick={ () => 
+        setNameSearchResults(nameSearchFunction(university, searchWord))} > Search
+     </button>
+      
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+     function nameSearchFunction(university, searchWord) {
+      let result = []
+      for(let i=0;i<=university.length;i++){
+           if(typeof(university[i]) === 'undefined') break;
+           if (university[i].name.toLowerCase().includes(searchWord.toLowerCase()))
+           {
+            result.push(university[i])
+           } 
+      }
+      if(result.length === 0) alert('No results found')
+      return result
+    }
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Search by country:
 
-## Learn More
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    // {country} gets the value from the input field next to it
+    // (countrySearchResults} is the object/array of objects returned by the function
+    
+    <button className='button' 
+        onClick={ () => 
+        setCountrySearchResults(countrySearchFunction(university, country))} > Search
+    </button>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    function countrySearchFunction(university, country) { 
+      let result = []
+      if(country === '') return countrySearchResults
+      for(let i=0;i<=university.length;i++){
+           if(typeof(university[i]) === 'undefined') break;
+           if (university[i].country.toLowerCase().includes(country.toLowerCase()))
+           {
+            result.push(university[i])
+           } 
+      }
+      if(result.length === 0) alert('This country does not exist')
+      return result
+    }
 
-### Code Splitting
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Search by e-mail address:
 
-### Analyzing the Bundle Size
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    // {email} gets the value from the input field next to it
+    // (emailResults} is the object/array of objects returned by the function
+    
+    <button className='button' 
+        onClick={ () =>  
+        setEmailResults(validateFunction(university, email))} > Search
+    </button>
 
-### Making a Progressive Web App
+    function validateFunction(university, email) {
+      let result=[]
+      let address = email;
+      let universityDomain = address.substring(address.lastIndexOf("@") +1);
+      for(let i=0;i<=university.length;i++){
+        if(typeof(university[i]) === 'undefined') break;
+        if (universityDomain.toLowerCase() ===
+         (university[i].domains[0].toLowerCase() || university[i].domains[1].toLowerCase() ))
+        {
+         result.push(university[i])
+        } 
+         }
+       console.log(result)
+       if(result.length === 0) alert('The e-mail address is invalid')
+       return result
+       }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
 
-### Advanced Configuration
+And the "Clear" button resets the displayed data by changing the state of the objects created before:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
 
-### Deployment
+      <button className='buttonClear' 
+       onClick={ () =>  {setEmailResults([]) 
+                        setCountrySearchResults([])
+                        setNameSearchResults([])
+                        }} > Clear </button>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Credits
+
+[University Domains and Names Data List & API](https://github.com/Hipo/university-domains-list-api)
